@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class World {
     public static void main(String[] args) {
         System.out.println("Start");
-        
+
         System.out.println("Stop");
     }
 
@@ -21,15 +21,12 @@ public class World {
     }
 
     public static Direction changeArgToEnum(String arg) {
-        switch (arg) {
-            case "f":
-                return Direction.FORWARD;
-            case "b":
-                return Direction.BACKWARD;
-            case "r":
-                return Direction.RIGHT;
-            case "l":
-                return Direction.LEFT;
-        }
+        return switch (arg) {
+            case "f" -> Direction.FORWARD;
+            case "b" -> Direction.BACKWARD;
+            case "r" -> Direction.RIGHT;
+            case "l" -> Direction.LEFT;
+            default -> null;
+        };
     }
 }
