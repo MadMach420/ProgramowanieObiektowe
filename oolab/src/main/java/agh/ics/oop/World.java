@@ -1,11 +1,10 @@
 package agh.ics.oop;
 
-import java.util.Arrays;
-
 public class World {
     public static void main(String[] args) {
         System.out.println("Start");
-
+        Direction[] argsToRun = prepareArrayOfDirections(args);
+        run(argsToRun);
         System.out.println("Stop");
     }
 
@@ -20,7 +19,15 @@ public class World {
         }
     }
 
-    public static Direction changeArgToEnum(String arg) {
+    public static Direction[] prepareArrayOfDirections(String[] args) {
+        Direction[] arrToReturn = new Direction[args.length];
+        for (int i = 0; i < args.length; i++) {
+            arrToReturn[i] = changeStringToDirection(args[i]);
+        }
+        return arrToReturn;
+    }
+
+    public static Direction changeStringToDirection(String arg) {
         return switch (arg) {
             case "f" -> Direction.FORWARD;
             case "b" -> Direction.BACKWARD;
