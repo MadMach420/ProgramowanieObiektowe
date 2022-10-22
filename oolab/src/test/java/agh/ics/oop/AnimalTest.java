@@ -8,7 +8,7 @@ public class AnimalTest {
         assert Animal.runSeriesOfCommands(new String[]{"f", "f", "r", "f"})
                 .toString()
                 .equals("Position: (3, 4), direction: Wschód");
-        assert Animal.runSeriesOfCommands(new String[]{"f", "f", "f"})
+        assert Animal.runSeriesOfCommands(new String[]{"forward", "forward", "forward"})
                 .toString()
                 .equals("Position: (2, 4), direction: Północ");
         assert Animal.runSeriesOfCommands(new String[]{"b", "b", "r", "r", "f"})
