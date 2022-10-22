@@ -1,18 +1,8 @@
 package agh.ics.oop;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 public class World {
     public static void main(String[] args) {
-        System.out.println("Start");
-//        Direction[] argsToRun = prepareArrayOfDirections(args); // robi to samo co one liner poniżej
-        Direction[] argsToRun = Arrays.stream(args)
-                .map(Direction::fromString)
-                .filter(Objects::nonNull)
-                .toArray(Direction[]::new);
-        run(argsToRun);
-        System.out.println("Stop");
+        System.out.println(Animal.runSeriesOfCommands(args));
     }
 
     public static void run(Direction[] args) {
