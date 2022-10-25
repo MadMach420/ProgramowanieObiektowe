@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import java.util.*;
+
 public class SimulationEngine implements IEngine{
     private final IWorldMap map;
     private final MoveDirection[] directions;
@@ -16,8 +18,10 @@ public class SimulationEngine implements IEngine{
     @Override
     public void run() {
         int animalToMove = 0;
+        List<Animal> animalList = ((RectangularMap)map).animalList;
         for (MoveDirection direction : directions) {
-            map.animalList
+            animalList.get(animalToMove).move(direction);
+            animalToMove = (animalToMove + 1) % animalList.size();
         }
     }
 }
