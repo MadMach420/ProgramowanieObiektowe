@@ -18,5 +18,17 @@ public class SimulationEngineTest {
                 new Vector2d[]{new Vector2d(2, 0), new Vector2d(3, 5)});
         testEngine.run();
         assert map.toString().equals(testMap.toString());
+
+        directions = OptionsParser.parse(new String[]{"r", "r"});
+        map = new RectangularMap(0, 0);
+        positions = new Vector2d[]{new Vector2d(0, 0), new Vector2d(0, 0)};
+        engine = new SimulationEngine(directions, map, positions);
+        engine.run();
+        testDirections = new MoveDirection[]{MoveDirection.RIGHT, MoveDirection.RIGHT};
+        testMap = new RectangularMap(0,0);
+        testEngine = new SimulationEngine(testDirections, testMap,
+                new Vector2d[]{new Vector2d(0, 0)});
+        testEngine.run();
+        assert map.toString().equals(testMap.toString());
     }
 }
