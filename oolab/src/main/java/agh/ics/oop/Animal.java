@@ -69,4 +69,8 @@ public class Animal {
         }
         return(zwierzak);
     }
+
+    public Vector2d getPosition() {
+        return position;
+    }
 }

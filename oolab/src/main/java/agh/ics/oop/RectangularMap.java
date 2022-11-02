@@ -3,10 +3,9 @@ package agh.ics.oop;
 import java.security.cert.TrustAnchor;
 import java.util.*;
 
-public class RectangularMap implements IWorldMap{
+public class RectangularMap extends AbstractWorldMap{
     private final int width;
     private final int height;
-    public final List<Animal> animalList = new LinkedList<>();
 
     public RectangularMap(int width, int height) {
         this.width = width;
@@ -18,24 +17,6 @@ public class RectangularMap implements IWorldMap{
         return position.follows(new Vector2d(0, 0)) &&
                 position.precedes(new Vector2d(width, height)) &&
                 !isOccupied(position);
-    }
-
-    @Override
-    public boolean place(Animal animal) {
-        if (animalList.contains(animal)) {
-            return false;
-        } else {
-            animalList.add(animal);
-            return true;
-        }
-    }
-
-    @Override
-    public boolean isOccupied(Vector2d position) {
-        for (Animal animal : animalList) {
-            if (animal.isAt(position)) return true;
-        }
-        return false;
     }
 
     @Override
