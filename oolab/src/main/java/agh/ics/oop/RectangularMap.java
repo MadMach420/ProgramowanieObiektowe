@@ -29,7 +29,8 @@ public class RectangularMap extends AbstractWorldMap{
         return null;
     }
 
-    public String toString() {
-        return new MapVisualizer(this).draw(new Vector2d(0, 0), new Vector2d(width, height));
+    @Override
+    public Vector2d[] getMapLimits() {
+        return new Vector2d[]{new Vector2d(0, 0), new Vector2d(width, height)};
     }
 }

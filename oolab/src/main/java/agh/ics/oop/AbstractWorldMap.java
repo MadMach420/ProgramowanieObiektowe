@@ -21,7 +21,11 @@ public abstract class AbstractWorldMap implements IWorldMap{
         return objectAt(position) != null;
     }
 
-    public Vector2d[] getMapLimits() {
+    public abstract Vector2d[] getMapLimits();
 
+    @Override
+    public String toString() {
+        Vector2d[] limits = getMapLimits();
+        return new MapVisualizer(this).draw(limits[0], limits[1]);
     }
 }

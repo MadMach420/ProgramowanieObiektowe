@@ -47,8 +47,7 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public String toString() {
-        MapVisualizer visualizer = new MapVisualizer(this);
+    public Vector2d[] getMapLimits() {
         int minX = animalList.get(0).getPosition().x, maxX = animalList.get(0).getPosition().x,
                 minY = animalList.get(0).getPosition().y, maxY = animalList.get(0).getPosition().y;
 
@@ -59,7 +58,14 @@ public class GrassField extends AbstractWorldMap {
             maxY = Math.max(maxY, animal.getPosition().y);
         }
 
-        return visualizer.draw(new Vector2d(minX - 1, minY - 1), new Vector2d(maxX + 1, maxY + 1));
+        for (Grass grass : grassList) {
+            minX = Math.min(minX, grass.getPosition().x);
+            maxX = Math.max(maxX, grass.getPosition().x);
+            minY = Math.min(minY, grass.getPosition().y);
+            maxY = Math.max(maxY, grass.getPosition().y);
+        }
+
+        return new Vector2d[]{new Vector2d(minX - 1, minY - 1), new Vector2d(maxX + 1, maxY + 1)};
     }
 
     public static void main(String[] args) {
