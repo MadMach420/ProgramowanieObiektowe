@@ -19,8 +19,9 @@ public class SimulationEngine implements IEngine{
 
     @Override
     public void run() {
+
         int animalToMove = 0;
-        List<Animal> animalList = ((RectangularMap)map).animalList;
+        List<Animal> animalList = ((AbstractWorldMap)map).animalList;
         for (MoveDirection direction : directions) {
             animalList.get(animalToMove).move(direction);
             animalToMove = (animalToMove + 1) % animalList.size();
