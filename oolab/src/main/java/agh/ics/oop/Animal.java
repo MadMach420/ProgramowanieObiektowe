@@ -1,16 +1,22 @@
 package agh.ics.oop;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Animal {
     private IWorldMap map;
     private MapDirection direction = MapDirection.NORTH;
     private Vector2d position = new Vector2d(2, 2);
+    private final List<IPositionChangeObserver> observerList = new LinkedList<>();
 
     public Animal(IWorldMap map) {
         this.map = map;
+        addObserver((AbstractWorldMap)map);
     }
 
     public Animal(IWorldMap map, Vector2d initialPosition) {
         this.map = map;
+        addObserver((AbstractWorldMap)map);
         this.position = initialPosition;
         map.place(this);
     }
@@ -40,6 +46,9 @@ public class Animal {
                         this.position.y + move.y
                 );
                 if (map.canMoveTo(nextPosition)) {
+                    if (observerList.size() > 0) {
+                        positionChanged(this.position, nextPosition);
+                    }
                     this.position = nextPosition;
                 }
             }
@@ -50,6 +59,9 @@ public class Animal {
                         this.position.y + move.y
                 );
                 if (map.canMoveTo(nextPosition)) {
+                    if (observerList.size() > 0) {
+                        positionChanged(this.position, nextPosition);
+                    }
                     this.position = nextPosition;
                 }
             }
@@ -72,5 +84,19 @@ public class Animal {
 
     public Vector2d getPosition() {
         return position;
+    }
+
+    public void addObserver(IPositionChangeObserver observer) {
+        observerList.add(observer);
+    }
+
+    public void removeObserver(IPositionChangeObserver observer) {
+        observerList.remove(observer);
+    }
+
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        for (IPositionChangeObserver observer : observerList) {
+            observer.positionChanged(oldPosition, newPosition);
+        }
     }
 }
