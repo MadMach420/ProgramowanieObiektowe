@@ -27,7 +27,6 @@ public class GrassFieldTest {
         assert !map.isOccupied(new Vector2d(100, 100));
         map.place(new Animal(map, new Vector2d(100, 100)));
         assert map.isOccupied(new Vector2d(100, 100));
-        assert map.isOccupied(map.grassList.get(0).getPosition());
     }
 
     @Test
@@ -36,6 +35,5 @@ public class GrassFieldTest {
         assert map.objectAt(new Vector2d(100, 100)) == null;
         map.place(new Animal(map, new Vector2d(100, 100)));
         assert map.objectAt(new Vector2d(100, 100)) instanceof Animal;
-        assert map.objectAt(map.grassList.get(0).getPosition()) instanceof Grass;
     }
 }
