@@ -9,7 +9,7 @@ public class GrassFieldTest {
         GrassField map = new GrassField(10);
         assert map.canMoveTo(new Vector2d(0,0));
         assert map.canMoveTo(new Vector2d(-1,-1));
-        map.place(new Animal(map, new Vector2d(0, 0)));
+        new Animal(map, new Vector2d(0, 0));
         assert !map.canMoveTo(new Vector2d(0,0));
     }
 
@@ -18,14 +18,18 @@ public class GrassFieldTest {
         GrassField map = new GrassField(10);
         Animal testAnimal = new Animal();
         assert map.place(testAnimal);
-        assert !map.place(testAnimal);
+        try {
+            map.place(testAnimal);
+        } catch (IllegalArgumentException e) {
+            assert true; // Powinno wywalać tu błąd
+        }
     }
 
     @Test
     public void testIsOccupied() {
         GrassField map = new GrassField(10);
         assert !map.isOccupied(new Vector2d(100, 100));
-        map.place(new Animal(map, new Vector2d(100, 100)));
+        new Animal(map, new Vector2d(100, 100));
         assert map.isOccupied(new Vector2d(100, 100));
     }
 
@@ -33,7 +37,7 @@ public class GrassFieldTest {
     public void testObjectAt() {
         GrassField map = new GrassField(10);
         assert map.objectAt(new Vector2d(100, 100)) == null;
-        map.place(new Animal(map, new Vector2d(100, 100)));
+        new Animal(map, new Vector2d(100, 100));
         assert map.objectAt(new Vector2d(100, 100)) instanceof Animal;
     }
 }

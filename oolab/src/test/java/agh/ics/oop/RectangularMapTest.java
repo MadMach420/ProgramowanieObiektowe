@@ -10,7 +10,7 @@ public class RectangularMapTest {
         assert map.canMoveTo(new Vector2d(0,0));
         assert map.canMoveTo(new Vector2d(0,10));
         assert !map.canMoveTo(new Vector2d(-1,-1));
-        map.place(new Animal(map, new Vector2d(0, 0)));
+        new Animal(map, new Vector2d(0, 0));
         assert !map.canMoveTo(new Vector2d(0,0));
     }
 
@@ -19,14 +19,18 @@ public class RectangularMapTest {
         RectangularMap map = new RectangularMap(5, 10);
         Animal testAnimal = new Animal();
         assert map.place(testAnimal);
-        assert !map.place(testAnimal);
+        try {
+            map.place(testAnimal);
+        } catch (IllegalArgumentException e) {
+            assert true; // Powinno tu wywalać błąd
+        }
     }
 
     @Test
     public void testIsOccupied() {
         RectangularMap map = new RectangularMap(5, 10);
         assert !map.isOccupied(new Vector2d(0, 0));
-        map.place(new Animal(map, new Vector2d(0, 0)));
+        new Animal(map, new Vector2d(0, 0));
         assert map.isOccupied(new Vector2d(0, 0));
     }
 
@@ -34,7 +38,7 @@ public class RectangularMapTest {
     public void testObjectAt() {
         RectangularMap map = new RectangularMap(5, 10);
         assert map.objectAt(new Vector2d(0, 0)) == null;
-        map.place(new Animal(map, new Vector2d(0, 0)));
+        new Animal(map, new Vector2d(0, 0));
         assert map.objectAt(new Vector2d(0, 0)) instanceof Animal;
     }
 }
