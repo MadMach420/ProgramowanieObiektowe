@@ -7,16 +7,28 @@ import java.util.Map;
 
 public class GrassField extends AbstractWorldMap {
     public final Map<Vector2d, Grass> grassMap = new HashMap<>();
+    private final MapBoundary boundary = new MapBoundary(this);
 
     public GrassField(int grassNumber) {
         for (int i = 0; i < grassNumber; i++) {
             Vector2d position = new Vector2d((int)(Math.random() * Math.sqrt(grassNumber)),
                     (int)(Math.random() * Math.sqrt(grassNumber)));
 
-            if (grassMap.put(position, new Grass(position)) != null) {
+            Grass grass = new Grass(position);
+            if (grassMap.put(position, grass) == null) {
+                boundary.addElement(grass.getPosition());
+            } else {
                 i--;
             }
         }
+    }
+
+    @Override
+    public boolean place(Animal animal) {
+        super.place(animal);
+        boundary.addElement(animal.getPosition());
+        animal.addObserver(boundary);
+        return true;
     }
 
     @Override
@@ -34,22 +46,6 @@ public class GrassField extends AbstractWorldMap {
 
     @Override
     public Vector2d[] getMapLimits() {
-        int minX = 1000000, maxX = -1000000, minY = 1000000, maxY = -1000000;
-
-        for (Animal animal : animalMap.values()) {
-            minX = Math.min(minX, animal.getPosition().x);
-            maxX = Math.max(maxX, animal.getPosition().x);
-            minY = Math.min(minY, animal.getPosition().y);
-            maxY = Math.max(maxY, animal.getPosition().y);
-        }
-
-        for (Grass grass : grassMap.values()) {
-            minX = Math.min(minX, grass.getPosition().x);
-            maxX = Math.max(maxX, grass.getPosition().x);
-            minY = Math.min(minY, grass.getPosition().y);
-            maxY = Math.max(maxY, grass.getPosition().y);
-        }
-
-        return new Vector2d[]{new Vector2d(minX - 1, minY - 1), new Vector2d(maxX + 1, maxY + 1)};
+        return boundary.getBoundaries();
     }
 }
