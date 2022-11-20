@@ -3,9 +3,10 @@ package agh.ics.oop;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Animal extends AbstractWorldMapElement {
+public class Animal {
     private IWorldMap map;
     private MapDirection direction = MapDirection.NORTH;
+    protected Vector2d position = new Vector2d(2, 2);
     private final List<IPositionChangeObserver> observerList = new LinkedList<>();
 
     public Animal(IWorldMap map) {
@@ -79,6 +80,10 @@ public class Animal extends AbstractWorldMapElement {
             zwierzak.move(direction);
         }
         return(zwierzak);
+    }
+
+    public Vector2d getPosition() {
+        return position;
     }
 
     public void addObserver(IPositionChangeObserver observer) {
