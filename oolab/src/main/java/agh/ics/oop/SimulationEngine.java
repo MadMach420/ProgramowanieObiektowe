@@ -10,16 +10,12 @@ public class SimulationEngine implements IEngine{
         this.directions = directions;
         this.map = map;
         for (Vector2d position : positions) {
-            if (map.canMoveTo(position)) {
-                Animal animal = new Animal(this.map, position);
-                this.map.place(animal);
-            }
+            Animal animal = new Animal(this.map, position);
         }
     }
 
     @Override
     public void run() {
-
         int animalToMove = 0;
         List<Animal> animalList = new ArrayList<>(((AbstractWorldMap)map).animalMap.values());
         for (MoveDirection direction : directions) {

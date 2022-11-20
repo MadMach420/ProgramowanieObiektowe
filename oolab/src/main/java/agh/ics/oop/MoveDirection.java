@@ -12,7 +12,7 @@ public enum MoveDirection {
             case "b", "backward" -> MoveDirection.BACKWARD;
             case "r", "right" -> MoveDirection.RIGHT;
             case "l", "left" -> MoveDirection.LEFT;
-            default -> null;
+            default -> throw new IllegalArgumentException(arg + " is not a legal move specification");
         };
     }
 }

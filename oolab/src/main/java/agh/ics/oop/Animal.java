@@ -6,7 +6,7 @@ import java.util.List;
 public class Animal {
     private IWorldMap map;
     private MapDirection direction = MapDirection.NORTH;
-    private Vector2d position = new Vector2d(2, 2);
+    protected Vector2d position = new Vector2d(2, 2);
     private final List<IPositionChangeObserver> observerList = new LinkedList<>();
 
     public Animal(IWorldMap map) {
