@@ -2,9 +2,9 @@ package agh.ics.oop;
 
 import java.util.*;
 
-public class SimulationEngine implements IEngine{
+public class SimulationEngine implements IEngine, Runnable{
     private final IWorldMap map;
-    private final MoveDirection[] directions;
+    private MoveDirection[] directions;
     private final List<ISimulationChangeObserver> observerList = new LinkedList<>();
 
     public SimulationEngine(MoveDirection[] directions, IWorldMap map, Vector2d[] positions) {
@@ -15,8 +15,20 @@ public class SimulationEngine implements IEngine{
         }
     }
 
+    public SimulationEngine(IWorldMap map, Vector2d[] positions) {
+        this.map = map;
+        for (Vector2d position : positions) {
+            Animal animal = new Animal(this.map, position);
+        }
+    }
+
+    public void setDirections(MoveDirection[] directions) {
+        this.directions = directions;
+    }
+
     @Override
     public void run() {
+        simulationStepAlert();
         int animalToMove = 0;
         List<Animal> animalList = new ArrayList<>(((AbstractWorldMap)map).animalMap.values());
         for (MoveDirection direction : directions) {
@@ -24,6 +36,7 @@ public class SimulationEngine implements IEngine{
             animalToMove = (animalToMove + 1) % animalList.size();
             simulationStepAlert();
         }
+        simulationStepAlert();
     }
 
     public void addObserver(ISimulationChangeObserver observer) {

@@ -2,38 +2,68 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class App extends Application implements ISimulationChangeObserver{
+    Stage stage;
+    IWorldMap map;
+    HBox hBox;
+    int moveDelay = 500;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            IWorldMap map = new GrassField(10);
-            MoveDirection[] directions = OptionsParser.parse(getParameters().getRaw().toArray(new String[0]));
-            Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
-            SimulationEngine engine = new SimulationEngine(directions, map, positions);
-            engine.addObserver(this);
-            engine.run();
-
-            GridPane gridPane = new GridPane();
-            drawGridPane(map, gridPane);
-
-            Scene scene = new Scene(gridPane, 1000, 1000);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            stage = primaryStage;
+            init();
+            Scene scene = new Scene(hBox, 1000, 1000);
+            stage.setScene(scene);
+            stage.show();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void drawGridPane(IWorldMap map, GridPane gridPane){
-        gridPane.getChildren().clear();
+    public void init() {
+        map = new GrassField(10);
+//        MoveDirection[] directions = OptionsParser.parse(getParameters().getRaw().toArray(new String[0]));
+        Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
+//        SimulationEngine engine = new SimulationEngine(directions, map, positions);
+        SimulationEngine engine = new SimulationEngine(map, positions);
+        engine.addObserver(this);
+
+
+        TextField textField = new TextField();
+        Button button = new Button("Start");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    MoveDirection[] directions = OptionsParser.parse(textField.getText().split(" +"));
+                    engine.setDirections(directions);
+                    Thread engineThread = new Thread(engine);
+                    engineThread.start();
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+
+
+        VBox controlsVBox = new VBox(20, textField, button);
+        hBox = new HBox(20, controlsVBox, new Label(""));
+    }
+
+    public void drawStage(){
+        GridPane gridPane = new GridPane();
         gridPane.setGridLinesVisible(true);
         Vector2d[] boundaries = ((AbstractWorldMap)map).getMapLimits();
         int width = boundaries[1].x - boundaries[0].x + 1;
@@ -72,10 +102,18 @@ public class App extends Application implements ISimulationChangeObserver{
                 }
             }
         }
+
+        hBox.getChildren().remove(1);
+        hBox.getChildren().add(1, gridPane);
     }
 
     @Override
     public void simulationStep() {
-
+        Platform.runLater(this::drawStage);
+        try {
+            Thread.sleep(moveDelay);
+        } catch (InterruptedException e) {
+            System.out.println("Simulation interrupted");
+        }
     }
 }
