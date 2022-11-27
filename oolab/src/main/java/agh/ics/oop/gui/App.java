@@ -27,6 +27,7 @@ public class App extends Application implements ISimulationChangeObserver{
             Scene scene = new Scene(hBox, 1000, 1000);
             stage.setScene(scene);
             stage.show();
+            drawStage();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }

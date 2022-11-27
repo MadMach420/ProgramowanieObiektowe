@@ -6,12 +6,15 @@ public class SimulationEngine implements IEngine, Runnable{
     private final IWorldMap map;
     private MoveDirection[] directions;
     private final List<ISimulationChangeObserver> observerList = new LinkedList<>();
+    private List<Animal> animalList = new LinkedList<>();
+    int animalToMove = 0;
 
     public SimulationEngine(MoveDirection[] directions, IWorldMap map, Vector2d[] positions) {
         this.directions = directions;
         this.map = map;
         for (Vector2d position : positions) {
             Animal animal = new Animal(this.map, position);
+            animalList.add(animal);
         }
     }
 
@@ -19,6 +22,7 @@ public class SimulationEngine implements IEngine, Runnable{
         this.map = map;
         for (Vector2d position : positions) {
             Animal animal = new Animal(this.map, position);
+            animalList.add(animal);
         }
     }
 
@@ -29,8 +33,6 @@ public class SimulationEngine implements IEngine, Runnable{
     @Override
     public void run() {
         simulationStepAlert();
-        int animalToMove = 0;
-        List<Animal> animalList = new ArrayList<>(((AbstractWorldMap)map).animalMap.values());
         for (MoveDirection direction : directions) {
             animalList.get(animalToMove).move(direction);
             animalToMove = (animalToMove + 1) % animalList.size();
